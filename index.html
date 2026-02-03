@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaRi Gaming Store | Akun Jadi Elit, Lu Tinggal Ngupi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0e14; color: #e2e8f0; overflow-x: hidden; font-size: 12px; min-height: 100vh; display: flex; flex-direction: column; }
+        .sidebar { background: #161b22; border-right: 1px solid #30363d; height: 100vh; position: fixed; left: 0; top: 0; width: 230px; z-index: 50; display: flex; flex-direction: column; }
+        .main-content { margin-left: 230px; padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; } }
+        .glass-card { background: #161b22; border: 1px solid #30363d; transition: 0.3s; cursor: pointer; border-radius: 1.2rem; }
+        .glass-card:hover { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.1); }
+        .selected-item { border-color: #3b82f6 !important; background: rgba(59, 130, 246, 0.1) !important; }
+        .gaming-gradient { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .desc-inline { max-height: 0; overflow: hidden; transition: 0.5s ease-out; }
+        .selected-item .desc-inline { max-height: 800px; margin-top: 10px; border-top: 1px solid rgba(59, 130, 246, 0.2); padding-top: 8px; }
+        .desc-text { font-size: 11px !important; line-height: 1.6 !important; font-weight: 600 !important; color: #cbd5e1 !important; }
+        input, select { background: #1c2128 !important; border: 1px solid #30363d !important; color: white !important; font-size: 11px !important; outline: none; }
+        .divider { border-bottom: 1px solid #30363d; margin: 1.5rem 0; }
+        .footer-bg { background: #0d1117; border-top: 2px solid #1d4ed8; padding: 4rem 1.5rem; margin-top: 6rem; width: 100%; }
+        .game-banner { width: 229px; height: 124px; object-fit: cover; border-radius: 1rem; border: 1px solid #30363d; }
+        .banner-container { width: 100%; max-width: 900px; margin: 0 auto 2rem auto; }
+        .banner-store { width: 100%; height: auto; border-radius: 2rem; border: 1px solid #30363d; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .cs-float { position: fixed; bottom: 20px; right: 20px; z-index: 100; cursor: pointer; transition: 0.3s; }
+        .cs-float:hover { transform: translateY(-5px); }
+    </style>
+</head>
+<body>
+    <aside class="sidebar p-5 hidden md:flex">
+        <div class="mb-4 flex items-center gap-3">
+            <img src="logo.png" class="w-8 h-8 rounded-lg border border-blue-500 shadow-lg object-cover">
+            <h1 class="text-xs font-black italic text-blue-500 uppercase tracking-tighter leading-tight">MaRi Gaming Store</h1>
+        </div>
+        <div class="bg-blue-600/5 border border-blue-500/20 p-3 rounded-2xl mb-6">
+            <p class="text-[8px] font-black text-blue-500 uppercase mb-1">Server Status:</p>
+            <p class="text-[10px] font-bold text-green-500 italic uppercase">● ONLINE & FAST RESPONSE</p>
+        </div>
+        <div id="sideNote" class="bg-gray-800/20 border border-gray-700/50 p-4 rounded-2xl mb-4">
+            <p class="text-[9px] font-black text-blue-500 uppercase mb-2">Note Buat Chief:</p>
+            <p id="noteText" class="text-[10px] text-gray-400 italic leading-relaxed">Pilih game elit lu dulu ya Chief buat mulai joki!</p>
+        </div>
+        <nav class="mt-auto space-y-1 font-bold italic text-[11px] text-gray-400 border-t border-gray-800 pt-4">
+            <a href="#" onclick="location.reload()" class="flex items-center gap-3 p-3 rounded-xl hover:text-blue-500 transition"><i class="fa-solid fa-house"></i> HOME</a>
+            <a href="#" onclick="window.open('https://wa.me/0895320302320')" class="flex items-center gap-3 p-3 rounded-xl hover:text-blue-500 transition"><i class="fa-solid fa-headset"></i> KONSULTASI ADMIN</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="banner-container">
+            <img src="banner.png" class="banner-store shadow-2xl">
+        </div>
+
+        <div id="step1" class="page-step active">
+            <h2 class="text-xs font-black italic text-blue-500 mb-8 tracking-widest uppercase">/ 01. PILIH GAME</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+                <div onclick="goToStep2('mlbb')" class="text-center group cursor-pointer w-fit">
+                    <img src="ml_logo.png" class="game-banner mb-4 group-hover:border-blue-500 transition-all duration-300 shadow-xl">
+                    <p class="font-black italic text-sm uppercase group-hover:text-blue-500 transition">MOBILE LEGENDS</p>
+                </div>
+                <div onclick="goToStep2('endfield')" class="text-center group cursor-pointer w-fit">
+                    <img src="endfield_logo.png" class="game-banner mb-4 group-hover:border-blue-500 transition-all duration-300 shadow-xl">
+                    <p class="font-black italic text-sm uppercase group-hover:text-blue-500 transition">ARKNIGHTS: ENDFIELD</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="step2" class="page-step hidden">
+            <button onclick="backToStep1()" class="text-blue-500 font-bold text-[9px] uppercase italic mb-6 inline-block"><i class="fa-solid fa-arrow-left mr-1"></i> KEMBALI</button>
+            <h2 class="text-xs font-black italic text-blue-500 mb-6 tracking-widest uppercase">/ 02. PILIH LAYANAN</h2>
+            <div id="pkgGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-10"></div>
+            
+            <div id="formData" class="hidden">
+                <div class="divider"></div>
+                <h2 class="text-xs font-black italic text-blue-500 mb-6 tracking-widest uppercase">/ 03. DATA LOGIN & PEMBAYARAN</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div id="endfieldExtras" class="hidden grid grid-cols-2 gap-3">
+                            <input type="text" id="lvlExplo" placeholder="Lvl Eksplorasi..." class="p-4 rounded-xl font-bold italic">
+                            <input type="text" id="lvlOto" placeholder="Lvl Otoritas..." class="p-4 rounded-xl font-bold italic">
+                        </div>
+                        <div id="baseExtras" class="hidden space-y-3">
+                            <input type="text" id="baseName" placeholder="Nama Base (cth: Base Utama AIC / Base AIC Penampungan)..." class="w-full p-4 rounded-xl font-bold italic">
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" id="lvlAIC" placeholder="Lvl AIC Inti..." class="p-4 rounded-xl font-bold italic">
+                                <input type="text" id="lvlBus" placeholder="Lvl Bus Depot..." class="p-4 rounded-xl font-bold italic">
+                            </div>
+                        </div>
+                        <div class="p-4 bg-gray-800/30 rounded-2xl border border-gray-700">
+                            <p class="text-[9px] font-black text-blue-500 uppercase mb-3">Login Akun Via:</p>
+                            <div id="loginOptions" class="grid grid-cols-3 gap-2"></div>
+                        </div>
+                        <input type="text" id="uId" placeholder="User ID / Email Login..." class="w-full p-4 rounded-xl font-bold italic">
+                        <input type="password" id="uPass" placeholder="Password Akun..." class="w-full p-4 rounded-xl font-bold italic">
+                    </div>
+                    <div class="space-y-6">
+                        <div class="p-4 bg-gray-800/30 rounded-2xl border border-gray-700">
+                            <p class="text-[9px] font-black text-blue-500 uppercase mb-3">Metode Pembayaran:</p>
+                            <div id="paymentMethodsGrid" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                <div onclick="setPay(this, 'QRIS')" class="pay-opt glass-card p-3 rounded-xl text-center text-[9px] font-black uppercase">QRIS</div>
+                                <div onclick="setPay(this, 'DANA')" class="pay-opt pay-premium glass-card p-3 rounded-xl text-center text-[9px] font-black uppercase">DANA</div>
+                                <div onclick="setPay(this, 'OVO')" class="pay-opt pay-premium glass-card p-3 rounded-xl text-center text-[9px] font-black uppercase">OVO</div>
+                                <div onclick="setPay(this, 'SEABANK')" class="pay-opt pay-premium glass-card p-3 rounded-xl text-center text-[9px] font-black uppercase">SEABANK</div>
+                            </div>
+                        </div>
+                        <input type="text" id="uWa" placeholder="Nomor WhatsApp Aktif..." class="w-full p-4 rounded-2xl text-center font-black italic border-blue-500/50">
+                        <p id="totalPrice" class="text-xl font-black italic text-blue-500 text-right">Rp 0</p>
+                        <button onclick="prosesCheckout()" class="w-full gaming-gradient py-5 rounded-3xl font-black italic tracking-widest shadow-xl hover:scale-105 transition">KONFIRMASI JOKI SEKARANG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer-bg -mx-6 px-10">
+            <div class="flex flex-col md:flex-row justify-between gap-10 mb-10 text-left">
+                <div class="max-w-xs">
+                    <h3 class="text-blue-500 font-black italic mb-3 uppercase text-sm">MaRi Gaming Store</h3>
+                    <p class="text-[10px] text-gray-400 italic">"MaRi Gaming Store, MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki" [cite: 2026-02-03]</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-[10px] mb-3 uppercase border-b border-gray-800 pb-1">Support</h4>
+                    <p onclick="window.open('https://wa.me/0895320302320')" class="text-[9px] text-gray-500 font-bold italic cursor-pointer hover:text-blue-500 transition">Konsultasi Admin</p>
+                </div>
+            </div>
+            <div class="text-center text-[9px] text-gray-700 font-bold border-t border-gray-900 py-6 uppercase italic">
+                &copy; 2026 MaRi Gaming Store. [cite: 2026-02-03]
+            </div>
+        </footer>
+    </main>
+
+    <div class="cs-float" onclick="window.open('https://wa.me/0895320302320')">
+        <div class="gaming-gradient p-4 rounded-full shadow-2xl border-2 border-blue-400/20">
+            <i class="fa-solid fa-headset text-white text-xl"></i>
+        </div>
+    </div>
+
+    <div id="modalPay" class="fixed inset-0 bg-[#0d1117]/98 hidden flex items-center justify-center p-6 z-[200] backdrop-blur-2xl overflow-y-auto">
+        <div class="bg-[#161b22] p-8 rounded-[3rem] w-full max-sm:max-w-xs border border-gray-800 shadow-2xl text-center relative">
+            <button onclick="closeModal()" class="absolute top-6 right-8 text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div id="payView">
+                <h3 class="font-black italic text-xl mb-4 text-blue-500 uppercase">INSTRUKSI PEMBAYARAN</h3>
+                <div class="bg-gray-800/40 p-5 rounded-2xl mb-6 text-left border border-gray-700">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">Tujuan Transfer:</p>
+                    <div id="bankDetail" class="font-black italic text-sm text-blue-400"></div>
+                </div>
+                <div id="qrisContainer" class="hidden mb-6">
+                    <img src="qris.png" class="mx-auto w-48 h-48 rounded-xl border border-white/10 p-2 bg-white">
+                </div>
+                <button onclick="kirimOrderKeServer()" id="btnBayar" class="w-full gaming-gradient py-4 rounded-2xl font-black italic uppercase shadow-lg">SAYA SUDAH BAYAR</button>
+            </div>
+            <div id="successView" class="hidden">
+                <div class="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50">
+                    <i class="fa-solid fa-check text-4xl"></i>
+                </div>
+                <h3 class="font-black italic text-xl mb-2 text-white uppercase tracking-tighter">PEMBAYARAN DITERIMA!</h3>
+                <p class="text-[14px] text-white font-black italic uppercase mb-2">Admin kami akan segera menghubungi Chief!</p>
+                <p class="text-[9px] text-gray-500 italic mb-6">Mohon ditunggu sebentar yah Chief, data joki udah mendarat di meja Admin. MaRI beresin tanpa keki!</p>
+                <div id="invoiceBox" class="bg-black/30 p-4 rounded-2xl text-left border border-gray-800 text-[10px] font-mono text-gray-300 space-y-1 mb-8 whitespace-pre"></div>
+                <button onclick="location.reload()" class="w-full bg-gray-800 py-4 rounded-2xl font-black italic uppercase border border-gray-700 hover:text-blue-500 transition">KEMBALI KE HOME</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const paymentAccounts = {
+            'QRIS': 'SCAN KODE QR DI BAWAH CHIEF!',
+            'DANA': 'DANA: 0895-3203-02320 (A/N RIDWAN)',
+            'OVO': 'OVO: 0851-5690-6427 (A/N RIDWAN)',
+            'SEABANK': 'SEABANK: 9012 3456 7890 (A/N RIDWAN)'
+        };
+
+        const gameData = {
+            mlbb: {
+                pkgs: [
+                    { n: "Joki Master (Per ⭐)", p: 2000, d: "Pengerjaan cepat rank Master. Winrate aman Chief. Hero meta pool luas." },
+                    { n: "Joki Grandmaster (Per ⭐)", p: 3000, d: "Beresin rank GM tanpa keki. Cocok buat naik ke Epic dengan winrate manis." },
+                    { n: "Joki Epic (Per ⭐)", p: 5000, d: "Layanan joki tier badak. Pengerjaan secepat kilat oleh joki professional." },
+                    { n: "Joki Legend (Per ⭐)", p: 7000, d: "Otw Mythic lancar jaya. Hero pool luas menyesuaikan meta terbaru." },
+                    { n: "Joki Mythic (Per ⭐)", p: 15000, d: "Rank kasta tinggi pengerjaan elit." }
+                ],
+                logins: ["MOONTON", "GOOGLE", "FB"]
+            },
+            endfield: {
+                pkgs: [
+                    { n: "Tier 1 (Basic Setup)", p: 5000, d: "Khusus setting 1 jenis produksi material awal (Rafinasi). Contoh: Bijih Ametis jadi Serat Ametis. Bukan 1 base utuh Chief.", type: 'base' },
+                    { n: "Tier 2 (Mid-Route)", p: 10000, d: "Pembuatan jalur conveyor belt otomatis sederhana untuk 1 jenis material dasar produksi.", type: 'base' },
+                    { n: "Tier 3 (Optimization)", p: 35000, d: "Re-layout total jalur produksi yang sudah berantakan. Workflow produksi lancar tanpa stuck.", type: 'base' },
+                    { n: "Tier 4 (Professional)", p: 50000, d: "Pemasangan jalur logistik otomatis skala menengah. Mengintegrasikan 2-3 area produksi sekaligus.", type: 'base' },
+                    { n: "Tier End (God Tier)", p: 100000, d: "Setting 6 Jalur Logistik Vertikal/Horizontal maksimal. Produksi super cepat & efisiensi 100%.", type: 'base' },
+                    { n: "Per Chapter (Story)", p: 20000, d: "Clear misi utama per chapter pilihan Chief. Harga menyesuaikan tingkat kesulitan misi.", type: 'story' },
+                    { n: "Paket Story (Ch 1-3)", p: 120000, d: "Akselerasi story awal sampai tamat Chapter 3. Progres cepat tanpa keki.", type: 'progress' },
+                    { n: "Eksplorasi Map", p: 125000, d: "Unlock Kabut, Beacon, & Teleport di area yang tersedia agar akses Chief lancar.", type: 'progress' },
+                    { n: "Resource Farm", p: 25000, d: "Satu kali sesi menghabiskan seluruh Stamina/Energy Chief untuk mencari material spesifik.", type: 'farm' },
+                    { n: "Daily Farm (1 Minggu)", p: 80000, d: "Jasa harian selama 7 hari (Login, Clear Daily Mission, dan kuras habis Stamina rutin).", type: 'farm' },
+                    { n: "Monthly Farming (VIP)", p: 250000, d: "VIP Service 30 hari. Full maintenance, event terbatas dikerjain admin, resource dijagain elit.", type: 'farm' },
+                    { n: "Starter Siap Tempur", p: 300000, d: "Story Ch 1-3 Tamat + Full Map Dasar Terbuka + Base Tier 2. Chief tinggal main elit.", type: 'all' },
+                    { n: "Pro-Farmer Setup", p: 500000, d: "Story Ch 1-5 Tamat + Full Map Exploration + Base Tier 4. Setup pabrik kompleks siap tempur.", type: 'all' },
+                    { n: "Akun Elit (End-Game)", p: 850000, d: "Full Story & Map + Setup Tower 6 Jalur + Bonus Maintenance Gratis 1 bulan. Kasta tertinggi.", type: 'all' },
+                    { n: "The Hub Map (Sultan)", p: 1377000, d: "Full Service eksplorasi map The Hub secara menyeluruh skala internasional. Clear 100%.", type: 'sultan' },
+                    { n: "Valley IV (Sultan)", p: 1836000, d: "Full Progress khusus area Valley IV dengan standar pengerjaan tinggi sampai tuntas tervalidasi.", type: 'sultan' },
+                    { n: "End-Game Integration", p: 2500000, d: "Setup base end-game paling kompleks Sultan. Integrasi seluruh sistem produksi otomatis total.", type: 'sultan' }
+                ],
+                logins: ["GOOGLE", "GRYPHLINE", "EMAIL"]
+            }
+        };
+
+        let curG, curP, curPr, curL, curPy, curType;
+
+        function goToStep2(game) {
+            curG = game;
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            renderData();
+        }
+
+        function renderData() {
+            const data = gameData[curG];
+            document.getElementById('pkgGrid').innerHTML = data.pkgs.map(p => `
+                <div onclick="selectPkg(this, '${p.n}', ${p.p}, \`${p.d}\`, '${p.type}')" class="glass-card p-5 rounded-[1.5rem]">
+                    <p class="font-black italic text-[10px] text-white uppercase">${p.n}</p>
+                    <p class="text-blue-500 font-black italic text-[9px]">Rp ${p.p.toLocaleString()}</p>
+                    <div class="desc-inline"><p class="desc-text text-left">${p.d}</p></div>
+                </div>
+            `).join('');
+            document.getElementById('loginOptions').innerHTML = data.logins.map(l => `<div onclick="setL(this, '${l}')" class="l-opt glass-card p-2 rounded-xl text-[9px] font-bold text-center uppercase">${l}</div>`).join('');
+        }
+
+        function selectPkg(el, n, p, d, type) {
+            curP = n; curPr = p; curType = type;
+            document.querySelectorAll('#pkgGrid > div').forEach(div => div.classList.remove('selected-item'));
+            el.classList.add('selected-item');
+            document.getElementById('totalPrice').innerText = `Rp ${p.toLocaleString()}`;
+            document.getElementById('formData').classList.remove('hidden');
+            
+            // LOGIKA DI BAWAH 10RB WAJIB QRIS
+            const isReceh = p < 10000;
+            document.querySelectorAll('.pay-premium').forEach(opt => {
+                opt.style.display = isReceh ? 'none' : 'block';
+            });
+
+            const isEndfield = curG === 'endfield';
+            document.getElementById('endfieldExtras').classList.toggle('hidden', !isEndfield);
+            document.getElementById('baseExtras').classList.toggle('hidden', !(isEndfield && (type === 'base' || type === 'all' || type === 'sultan')));
+        }
+
+        function setL(el, type) {
+            curL = type;
+            document.querySelectorAll('.l-opt').forEach(t => t.classList.remove('selected-item'));
+            el.classList.add('selected-item');
+        }
+
+        function setPay(el, method) {
+            curPy = method;
+            document.querySelectorAll('.pay-opt').forEach(c => c.classList.remove('selected-item'));
+            el.classList.add('selected-item');
+            document.getElementById('bankDetail').innerText = paymentAccounts[method];
+            document.getElementById('qrisContainer').classList.toggle('hidden', method !== 'QRIS');
+        }
+
+        function closeModal() { document.getElementById('modalPay').classList.add('hidden'); }
+        function backToStep1() { location.reload(); }
+
+        function prosesCheckout() {
+            if(!curP || !curPy || !document.getElementById('uWa').value) return alert('Lengkapi Data Chief!');
+            document.getElementById('modalPay').classList.remove('hidden');
+            document.getElementById('payView').classList.remove('hidden');
+            document.getElementById('successView').classList.add('hidden');
+        }
+
+        async function kirimOrderKeServer() {
+            const btn = document.getElementById('btnBayar');
+            btn.disabled = true; btn.innerText = "MENGIRIM...";
+            const trkId = 'MARI-' + Math.floor(Math.random()*99999);
+            const invoiceText = `-------------------------\nMA-RI STORE INVOICE\n-------------------------\nTRK: ${trkId}\nGAME: ${curG.toUpperCase()}\nPKT: ${curP}\nTOT: Rp ${curPr.toLocaleString()}\nPAY: ${curPy}\nWA: ${document.getElementById('uWa').value}\nSTATUS: BERHASIL\n-------------------------`;
+            
+            const orderData = {
+                trkId, game: curG, pkg: curP, price: curPr, pay: curPy, wa: document.getElementById('uWa').value,
+                id: document.getElementById('uId').value, pass: document.getElementById('uPass').value, loginVia: curL,
+                base: document.getElementById('baseName').value, lvlExplo: document.getElementById('lvlExplo').value,
+                lvlOto: document.getElementById('lvlOto').value, lvlAIC: document.getElementById('lvlAIC').value, lvlBus: document.getElementById('lvlBus').value
+            };
+
+            try {
+                // Link API Koyeb ditaro di sini Chief [cite: 2026-02-04]
+                await fetch('https://mari-bot-server.koyeb.app/api/order', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(orderData)
+                });
+                document.getElementById('invoiceBox').innerText = invoiceText;
+                document.getElementById('payView').classList.add('hidden');
+                document.getElementById('successView').classList.remove('hidden');
+            } catch (e) {
+                document.getElementById('invoiceBox').innerText = invoiceText;
+                document.getElementById('payView').classList.add('hidden');
+                document.getElementById('successView').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
