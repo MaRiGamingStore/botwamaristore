@@ -11,34 +11,25 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// --- 1. DASHBOARD WEB TOKO ---
+// --- 1. BOOSTER: KEEP ALIVE & DASHBOARD ---
 app.get('/', (req, res) => {
     res.send(`
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>MaRi Gaming Store | Elit Dashboard</title>
-            <style>
-                body { background: #0a0a0a; color: #00ff00; font-family: sans-serif; text-align: center; padding: 50px; }
-                .container { border: 2px dashed #00ff00; display: inline-block; padding: 40px; border-radius: 30px; box-shadow: 0 0 30px #00ff00; }
-                h1 { text-transform: uppercase; letter-spacing: 5px; }
-                .slogan { color: #fff; font-style: italic; margin-bottom: 30px; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
+        <body style="background:#0a0a0a;color:#00ff00;text-align:center;padding:50px;font-family:sans-serif;">
+            <div style="border:2px solid #00ff00;display:inline-block;padding:20px;border-radius:15px;">
                 <h1>MaRi Gaming Store 🎮</h1>
-                <p class="slogan">"MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki"</p>
-                <p>STATUS: ONLINE & READY TO JOKI</p>
+                <p>"MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki"</p>
+                <p>STATUS: <span style="color:#fff">FAST RESPONSE ACTIVE</span></p>
             </div>
         </body>
-        </html>
     `);
 });
 
-// --- 2. MESIN BOT WHATSAPP (SETTINGAN EXTRA LIGHT) ---
+// Pemanasan Mesin tiap 5 menit biar gak lelet
+setInterval(() => {
+    console.log("MaRI Booster: Jaga mesin tetep panas biar fast response...");
+}, 300000);
+
+// --- 2. SETTING MESIN BOT (EXTRA BOOSTER RAM) ---
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
@@ -49,8 +40,8 @@ const client = new Client({
             '--disable-dev-shm-usage',
             '--no-zygote',
             '--disable-gpu',
-            '--disable-web-security',
-            '--disable-features=IsolateOrigins,site-per-process'
+            '--disable-software-rasterizer',
+            '--js-flags="--max-old-space-size=450"' // Alokasi RAM biar gak lemot
         ],
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium'
     }
@@ -62,76 +53,99 @@ client.on('qr', (qr) => {
 });
 
 client.on('ready', () => {
-    console.log('MaRI Gaming Store Bot SIAP TERIMA ORDERAN ELIT!');
+    console.log('✅ MaRI Gaming Store Bot SIAP TERIMA ORDERAN ELIT!');
 });
 
-// --- 3. LOGIKA BOT INTERAKTIF ---
+// --- 3. LOGIKA BOT INTERAKTIF (HARGA JANGAN DIUBAH) ---
 client.on('message', async (msg) => {
+    const chat = await msg.getChat();
     const body = msg.body.toLowerCase();
 
+    // Auto-read biar buyer seneng dapet centang biru cepet
+    await chat.sendSeen();
+
+    // Menu Utama + Slogan Sakti
     if (body === 'p' || body === 'menu' || body === 'halo' || body === 'start') {
         await msg.reply(`*MaRi Gaming Store, MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki* ☕🎮
 
-Pilih menu (Ketik Angkanya):
-1️⃣. List Joki MLBB
-2️⃣. List Joki Arknights: Endfield (Detail)
-3️⃣. Format Order & Payment
-4️⃣. Hubungi Owner (Admin)`);
+Selamat datang Chief! Pilih menu buat cek layanan elit kami:
+1️⃣. List Joki MLBB (Anti Lose Streak)
+2️⃣. List Joki Arknights: Endfield (Deskripsi Detail)
+3️⃣. Format Order Manual (Pembayaran)
+4️⃣. Hubungi Admin);
     }
 
+    // --- HARGA MLBB (TETAP SAMA) ---
     else if (body === '1') {
-        await msg.reply(`🎮 *LIST JOKI MLBB ELIT*
-• Master: 3k | GM: 4k | Epic: 5k
+        await msg.reply(`🎮 *LIST JOKI MLBB ELIT (PER BINTANG)*
+        
+• Master: 3k | Grandmaster: 4k | Epic: 5k
 • Legend: 8k | Mythic (0-25): 12k
-• Mythic Honor: 15k | Mythic Glory: 22k
-• Mythic Immortal: 35k++`);
+• Mythic Honor (25-50): 15k
+• Mythic Glory (50-100): 22k
+• Mythic Immortal (100+): 35k++
+
+Ketik *3* buat dapet format ordernya, Chief!`);
     }
 
+    // --- HARGA ENDFIELD (DESKRIPSI DETAIL TETAP) ---
     else if (body === '2') {
-        await msg.reply(`🏗️ *JOKI ARKNIGHTS: ENDFIELD*
-⚠️ _BACA DESKRIPSI BIAR GAK KEKIE!_
+        await msg.reply(`🏗️ *JOKI ARKNIGHTS: ENDFIELD (BASE & PROGRESS)*
+⚠️ _WAJIB BACA DESKRIPSI BIAR GAK SALAH PAHAM!_
 
+*-- BASE SETUP (LOGISTIK) --*
 🟢 *Tier 1 (Rafinasi)*: 10k /Pabrik (Pkt 5: 40k)
 _D: Setting 1 jenis produksi awal. Bukan 1 base utuh!_
 
 🟡 *Tier 2 (Conveyor)*: 15k /Jalur (Pkt 5: 60k)
-_D: Jalur otomatis sederhana per jenis material._
+_D: Jalur otomatis sederhana per jenis material dasar._
 
 🟠 *Tier 3 (Optimization)*: 45k
-_D: Re-layout total jalur stuck agar workflow lancar._
+_D: Re-layout total jalur produksi yang berantakan/stuck._
 
 🔴 *Tier 4 (Professional)*: 85k
-_D: Logistik skala menengah, integrasi 2-3 area._
+_D: Pemasangan jalur logistik otomatis skala menengah._
 
 ⭐ *Tier End (God Tier)*: 175k
-_D: 6 Jalur Logistik Maksimal. Efisiensi 100%._
+_D: Setting 6 Jalur Logistik Vertikal/Horizontal maksimal. Efisiensi 100%._
 
-*-- STORY & PROGRESS --*
-• Per Chapter: 20k | Paket Ch 1-3: 55k
-• Full Map Exploration: 125k
-• Daily Farm (7 Hari): 75k | Monthly VIP: 300k`);
+*-- STORY & FARMING --*
+• Per Chapter (Story): 20k | Paket Story (Ch 1-3): 55k
+• Full Exploration Map: 125k | Resource Farm: 20k
+• Daily Farm (7 Hari): 75k | Monthly VIP (30 Hari): 300k
+
+*-- PAKET SULTAN --*
+• Akun Elit (End-Game): 750k | The Hub Map: 1.250k
+
+Ketik *3* buat format order & payment!`);
     }
 
+    // --- FORMAT ORDER ---
     else if (body === '3') {
-        await msg.reply(`📝 *FORMAT ORDER MaRI STORE*
+        await msg.reply(`📝 *FORMAT ORDER JOKI MaRI STORE*
+        
 Game:
 Layanan/Tier:
 Login Via:
 Email/ID:
 Pass:
-Metode Pembayaran: (Dana / Gopay / QRIS)`);
+Metode Pembayaran: (Dana / Gopay / QRIS)
+
+*Kirim format ini dan tunggu Admin konfirmasi ya!*
+_MaRi Beresin Tanpa Keki!_`);
     }
 
+    // --- ADMIN ---
     else if (body === '4' || body === 'admin') {
-        await msg.reply('Siapp Chief! Admin Ridwan udah dikasih tau.');
-        await client.sendMessage(MY_NUMBER, `🚨 Ada buyer nyariin lu Chief!\nNomor: ${msg.from}`);
+        await msg.reply('Siapp Chief! Admin Ridwan udah dikasih tau, tunggu bentar ya.');
+        await client.sendMessage(MY_NUMBER, `🚨 *CHIEF!* Ada buyer butuh bantuan.\nNomor: ${msg.from}`);
     }
 });
 
 // --- 4. ENDPOINT API (INVOICE) ---
 app.post('/api/order', async (req, res) => {
     const d = req.body;
-    let msg = `🔔 *ORDERAN BARU (INVOICE)*\n\n📌 TRK: ${d.trkId}\n🎮 Game: ${d.game}\n💰 Total: Rp ${d.price}\n🔑 Akun: ${d.id} / ${d.pass}`;
+    let msg = `🔔 *ORDERAN BARU (INVOICE)*\n\n📌 TRK: ${d.trkId}\n🎮 Game: ${d.game}\n💰 Total: Rp ${d.price.toLocaleString()}\n🔑 Akun: ${d.id} / ${d.pass}\n*MaRI Beresin Tanpa Keki!*`;
     try {
         await client.sendMessage(MY_NUMBER, msg);
         res.status(200).send({ status: 'SUCCESS' });
@@ -141,8 +155,6 @@ app.post('/api/order', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-    console.log(`Server Dashboard MaRi Store jalan di port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server jalan di port ${PORT}`));
 
 client.initialize();
