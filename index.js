@@ -10,7 +10,7 @@ const app = express();
 const userState = {};
 
 app.get('/', (req, res) => {
-    res.send('MaRI Store Bot Engine: ACTIVE');
+    res.send('<h1>MaRI Store Bot Engine: ACTIVE</h1>');
 });
 
 const client = new Client({
@@ -45,10 +45,16 @@ client.on('message', async (msg) => {
 
     if (from.includes('@g.us')) return;
 
-    // Reset ke menu utama
-    if (bodyLow === 'p' || bodyLow === 'menu' || bodyLow === 'halo') {
+    // --- FITUR CANCEL / BATAL ---
+    if (bodyLow === 'cancel' || bodyLow === 'batal') {
+        delete userState[from];
+        return await msg.reply('❌ *Pesanan dibatalkan.*\nKetik *Menu* untuk kembali ke layanan elit kami.');
+    }
+
+    // --- MENU UTAMA ---
+    if (bodyLow === 'p' || bodyLow === 'menu' || bodyLow === 'halo' || bodyLow === 'start') {
         userState[from] = { step: 'main_menu' };
-        return await msg.reply(`*MaRi Gaming Store, MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki* ☕🎮\n\nPilih layanan (Ketik Angkanya):\n1️⃣. List Joki MLBB\n2️⃣. List Joki Arknights: Endfield (Detail)\n3️⃣. Hubungi Admin`);
+        return await msg.reply(`*MaRi Gaming Store, MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki* ☕🎮\n\nPilih layanan (Ketik Angkanya):\n1️⃣. List Joki MLBB\n2️⃣. List Joki Arknights: Endfield (Detail)\n3️⃣. Hubungi Admin\n\n_Ketik *Cancel* kapan saja untuk membatalkan._`);
     }
 
     const state = userState[from]?.step;
@@ -100,7 +106,7 @@ _D: Setting 6 Jalur Logistik Maksimal. Efisiensi 100%._
         userState[from].tier = body; 
         userState[from].step = 'waiting_format';
         
-        await msg.reply(`✅ *Pilihan Layanan Nomor [${body}] Berhasil Dicatat!*\n\nSilahkan isi & kirim balik format order ini:\n\n*Game:* ${userState[from].game}\n*Layanan Nomor:* ${body}\n*Login Via:* \n*Email/ID:* \n*Pass:* \n*Metode Pembayaran:* (Dana/Gopay/QRIS)\n\n_Salin format di atas, isi dengan benar, lalu kirim balik ya Chief!_`);
+        await msg.reply(`✅ *Pilihan Layanan Nomor [${body}] Berhasil Dicatat!*\n\nSilahkan isi & kirim balik format order ini:\n\n*Game:* ${userState[from].game}\n*Layanan Nomor:* ${body}\n*Login Via:* \n*Email/ID:* \n*Pass:* \n*Metode Pembayaran:* (Dana/Gopay/QRIS)\n\n_Salin format di atas, isi dengan benar, lalu kirim balik ya Chief! Ketik *Cancel* jika ingin batal._`);
     }
 
     // --- STEP 3: TERIMA FORMAT & LAPOR KE LU ---
@@ -110,7 +116,7 @@ _D: Setting 6 Jalur Logistik Maksimal. Efisiensi 100%._
 
         await msg.reply(`✅ *Format Berhasil Dikirim!*\n\nAdmin Ridwan udah dapet notif pesanan lu. Mohon tunggu bentar buat konfirmasi ya. MaRi Kita Joki, Akun Jadi Elit!`);
         
-        delete userState[from]; // Selesai
+        delete userState[from]; 
     }
 });
 
