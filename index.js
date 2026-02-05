@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const MY_NUMBER = '6285156906427@c.us'; // Nomor pribadi Ridwan 
+const MY_NUMBER = '6285156906427@c.us';
 
 const app = express();
 app.use(cors());
@@ -14,20 +14,15 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         handleSIGINT: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--no-zygote'
+        ]
     }
 });
 
-client.on('qr', (qr) => {
-    console.log('CHIEF RIDWAN, SCAN QR INI DI TAB LOGS KOYEB:');
-    qrcode.generate(qr, { small: true });
-});
-
-client.on('ready', () => {
-    console.log('MaRI Gaming Store Bot SIAP TEMPUR DI KOYEB!');
-});
-
-// DATA DESKRIPSI LENGKAP PENGERJAAN (Dagingnya MaRi Store Chief!) 
 const serviceDescriptions = {
     'mlbb': {
         'Joki Master': 'Pengerjaan cepat rank Master. Winrate aman Chief. Hero meta pool luas.',
@@ -57,30 +52,60 @@ const serviceDescriptions = {
     }
 };
 
-// FITUR PILIHAN MENU OTOMATIS
 const menuPilihan = `🎮 *MENU LAYANAN MA-RI GAMING STORE* 🎮
 
 *ARKNIGHTS: ENDFIELD*
-1. Tier 1 (Basic Setup)
-2. Tier 2 (Mid-Route)
-... (dan seterusnya sampai 17 layanan Chief)
+1. Tier 1 (Basic Setup) - Rp 5.000
+2. Tier 2 (Mid-Route) - Rp 10.000
+3. Tier 3 (Optimization) - Rp 35.000
+4. Tier 4 (Professional) - Rp 50.000
+5. Tier End (God Tier) - Rp 100.000
+6. Per Chapter (Story) - Rp 20.000
+7. Paket Story (Ch 1-3) - Rp 120.000
+8. Eksplorasi Map - Rp 125.000
+9. Resource Farm - Rp 25.000
+10. Daily Farm (1 Minggu) - Rp 80.000
+11. Monthly Farming (VIP) - Rp 250.000
+12. Starter Siap Tempur - Rp 300.000
+13. Pro-Farmer Setup - Rp 500.000
+14. Akun Elit (End-Game) - Rp 850.000
+15. The Hub Map (Sultan) - Rp 1.377.000
+16. Valley IV (Sultan) - Rp 1.836.000
+17. End-Game Integration - Rp 2.500.000
 
 *MOBILE LEGENDS*
 A. Joki Master
 B. Joki Grandmaster
-... (dan seterusnya)
+C. Joki Epic
+D. Joki Legend
+E. Joki Mythic
 
-*Bales "Menu" buat liat list ini lagi Chief!*
+*Bales dengan Angka (1-17) atau Huruf (A-E) buat pilih layanan Chief!*
 "MaRi Gaming Store, MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi"`;
 
+client.on('qr', (qr) => {
+    console.log('CHIEF SCAN QR INI DI TAB LOGS KOYEB:');
+    qrcode.generate(qr, { small: true });
+});
+
+client.on('ready', () => {
+    console.log('BOT MA-RI STORE STATUS: AKTIF & SIAP TEMPUR!');
+});
+
+// LOGIKA PILIH LAYANAN OTOMATIS
 client.on('message', async msg => {
-    const chat = msg.body.toLowerCase();
-    if (chat.includes('menu') || chat.includes('pilih')) {
+    const chat = msg.body.toUpperCase();
+    
+    if (chat === 'MENU' || chat === 'P' || chat === 'HALO') {
         await msg.reply(menuPilihan);
+    } 
+    
+    // Contoh Logika Respon Pilihan (Bisa lu kembangin terus Chief)
+    if (chat === '1') {
+        await msg.reply(`*Pilihan: Tier 1 (Basic Setup)*\n\nDeskripsi: ${serviceDescriptions.endfield['Tier 1 (Basic Setup)']}\n\nHarga: Rp 5.000 (Wajib QRIS)\n\nSilakan lanjut order via web atau kirim format data joki ke Admin Chief!`);
     }
 });
 
-// ENDPOINT TERIMA DATA DARI WEB
 app.post('/api/order', async (req, res) => {
     const d = req.body;
     const desc = serviceDescriptions[d.game]?.[d.pkg] || 'Deskripsi tidak ditemukan Chief.';
@@ -108,16 +133,20 @@ app.post('/api/order', async (req, res) => {
                `🚌 Lvl Bus Depot: ${d.lvlBus || '-'}\n`;
     }
 
-    msg += `\n*MaRI Beresin Tanpa Keki!*]`;
+    msg += `\nMaRi Gaming Store, MaRi Kita Joki, Akun Jadi Elit, Lu Tinggal Ngupi, MaRI Beresin Tanpa Keki`;
 
     try {
         await client.sendMessage(MY_NUMBER, msg);
         res.status(200).send({ status: 'SUCCESS' });
     } catch (err) {
+        console.error('Bot Error:', err);
         res.status(500).send({ status: 'FAILED' });
     }
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => { console.log(`Bot aktif di port ${PORT}`); });
+app.listen(PORT, () => {
+    console.log(`Server API Bot jalan di port ${PORT}`);
+});
+
 client.initialize();
